@@ -24,6 +24,10 @@ FROM python:latest
 
 FROM python:3.11-slim
 
+Наглядный пример:
+<img width="1188" height="280" alt="image" src="https://github.com/user-attachments/assets/56426cb2-a47c-4104-acf7-bbc2cf15b947" />
+
+
 ---
 
 ## 2. Копирование всего проекта в контейнер
