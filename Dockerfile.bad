@@ -1,0 +1,13 @@
+FROM python:latest
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pip install flask
+
+RUN apt-get update && apt-get install -y curl
+
+EXPOSE 5000
+
+CMD python app.py
