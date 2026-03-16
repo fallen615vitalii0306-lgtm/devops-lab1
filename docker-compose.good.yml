@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.good
+    ports:
+      - "5000:5000"
+    restart: always
+    networks:
+      - web-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: strongpassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - db-network
+
+networks:
+  web-network:
+  db-network:
+
+volumes:
+  postgres-data:
