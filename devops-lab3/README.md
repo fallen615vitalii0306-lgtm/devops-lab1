@@ -61,6 +61,7 @@
 Обнаружена уязвимость типа *Information Disclosure* — сервер раскрывает конфигурационные и служебные файлы.
 
 **Скриншоты:**
+
 ![robots](screenshots/robots.png)
 ![readme](screenshots/readme.png)
 ![webconfig](screenshots/webconfig.png)
