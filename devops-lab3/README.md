@@ -19,33 +19,6 @@
 - реализован механизм `alias`  
 - исправлена кодировка (UTF-8)  
 
-## Структура проекта
-
-devops-lab3/
-│
-├── nginx/
-│ ├── pet1.conf
-│ └── pet2.conf
-│
-├── sites/
-│ ├── site1/index.html
-│ ├── site2/index.html
-│ └── shared/info.txt
-│
-├── screenshots/
-│
-└── README.md
-
-
-## 🌐 Проверка работы
-
-Доступные адреса:
-
-- http://pet1.local - редирект на HTTPS  
-- https://pet1.local  
-- https://pet1.local/shared/info.txt  
-- https://pet2.local  
-
 
 ## 📸 Результаты работы
 
