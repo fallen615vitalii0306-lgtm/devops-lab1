@@ -78,8 +78,7 @@
 Уязвимость Path Traversal не подтверждена.
 
 **Скриншот:**
-![admin](screenshots/admin.png)
-
+![headers](screenshots/headers.png)
 
 
 ## 3. Проверка административных URL
@@ -97,7 +96,7 @@
 Контроль доступа настроен корректно.
 
 **Скриншот:**
-![headers](screenshots/headers.png)
+![admin](screenshots/admin.png)
 
 ---
 
