@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  vault:
+    image: hashicorp/vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+    command: server -dev
+
+  app:
+    build: ./app
+    depends_on:
+      - vault
+    environment:
+      MY_SECRET: "from_env_not_secure"
