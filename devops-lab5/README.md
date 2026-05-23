@@ -1,32 +1,17 @@
 # Лабораторная работа №5: мониторинг сервиса в Kubernetes
+# Выполнил: Швецов В.А. (Т3231)
 
 ## Цель работы
-
-Цель лабораторной работы — настроить мониторинг сервиса, запущенного в Kubernetes, с помощью Prometheus и Grafana.
-
+Настроить мониторинг сервиса, запущенного в Kubernetes, с помощью Prometheus и Grafana.
 В качестве тестового сервиса был использован `nginx`, запущенный в локальном Kubernetes-кластере через Minikube.
 
 ## Что было сделано
-
 В ходе работы был поднят локальный Kubernetes-кластер с помощью Minikube.  
 После этого через Helm был установлен стек `kube-prometheus-stack`, в который входят Prometheus, Grafana, node-exporter, kube-state-metrics, Alertmanager и Prometheus Operator.
-
 Prometheus использовался для сбора метрик Kubernetes-кластера, а Grafana — для их визуализации.  
 Также был создан тестовый сервис `nginx-demo`, чтобы проверить работу приложения внутри Kubernetes и отобразить состояние системы на графиках.
 
-## Используемые технологии
-
-- Linux
-- Docker
-- Minikube
-- Kubernetes
-- kubectl
-- Helm
-- Prometheus
-- Grafana
-- nginx
-
-## Структура проекта
+## Структура
 
 ```text
 .
@@ -45,104 +30,63 @@ Prometheus использовался для сбора метрик Kubernetes-
     └── 05-custom-dashboard-cpu-memory.png
 ```
 
-## Запуск Kubernetes-кластера
+## Ход работы
 
-Сначала был запущен локальный Kubernetes-кластер:
-
+Сначала был запущен локальный Kubernetes-кластер через Minikube:
 ```bash
 minikube start --driver=docker
 ```
 
-Проверка состояния кластера:
-
+После запуска я проверил состояние кластера:
 ```bash
 kubectl get nodes
 kubectl get pods -A
 ```
 
-## Установка Prometheus и Grafana
-
-Для установки Prometheus и Grafana использовался Helm chart `kube-prometheus-stack`.
-
-Добавление Helm-репозитория:
-
+Для мониторинга был установлен `kube-prometheus-stack`, который включает Prometheus и Grafana:
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
-```
-
-Создание namespace для мониторинга:
-
-```bash
 kubectl create namespace monitoring
-```
-
-Установка стека мониторинга:
-
-```bash
 helm install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring
 ```
 
-Проверка pod'ов мониторинга:
-
+После установки я проверил, что компоненты мониторинга успешно запустились:
 ```bash
 kubectl get pods -n monitoring
-```
-
-Проверка service'ов мониторинга:
-
-```bash
 kubectl get svc -n monitoring
 ```
 
 ## Запуск тестового сервиса
-
-В качестве тестового сервиса был запущен `nginx`.
-
-Применение Kubernetes-манифестов:
-
+В качестве тестового сервиса был запущен `nginx` из Kubernetes-манифестов:
 ```bash
 kubectl apply -k k8s/
 ```
 
-Проверка pod'ов:
-
+Проверка запущенного сервиса:
 ```bash
 kubectl get pods
-```
-
-Проверка service'ов:
-
-```bash
 kubectl get svc
 ```
 
 ## Открытие Grafana
-
-Пароль администратора Grafana был получен командой:
-
+Пароль администратора Grafana был получен из Kubernetes secret:
 ```bash
 kubectl get secret monitoring-grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 --decode; echo
 ```
 
-После этого был выполнен port-forward для доступа к Grafana из браузера:
-
+Для доступа к Grafana был выполнен проброс порта:
 ```bash
 kubectl port-forward svc/monitoring-grafana -n monitoring 3000:80
 ```
 
-Grafana открывалась по адресу:
-
+После этого Grafana была доступна по адресу:
 ```text
 http://localhost:3000
 ```
+Для входа использовался логин `admin` и пароль, полученный командой выше.
 
-Данные для входа:
 
-```text
-Login: admin
-Password: пароль из команды выше
-```
 
 ## Графики в Grafana
 
@@ -152,12 +96,11 @@ Password: пароль из команды выше
 
 ### Использование CPU
 
-PromQL-запрос:
+PromQL-запрос
 
 ```promql
 sum(rate(node_cpu_seconds_total{mode!="idle"}[5m]))
 ```
-
 Этот график показывает текущую загрузку CPU на Kubernetes-узле.
 
 ### Доступная оперативная память
@@ -167,7 +110,6 @@ PromQL-запрос:
 ```promql
 node_memory_MemAvailable_bytes
 ```
-
 Этот график показывает количество доступной оперативной памяти на Kubernetes-узле.
 
 ## Скриншоты
